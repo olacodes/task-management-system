@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-service-deploy
+  labels:
+    name: task-service-deploy
+    app: task-service
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: task-service-pod
+      app: task-service
+  template:
+    metadata:
+      name: task-service-pod
+      labels:
+        name: task-service-pod
+        app: task-service
+    spec:
+      containers:
+        - name: task-service
+          image: olacodes/task-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8082
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kube

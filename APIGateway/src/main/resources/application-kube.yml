@@ -1,0 +1,33 @@
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
+    enabled: false
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service-svc
+          uri: lb://AUTH-SERVICE-SVC
+          predicates:
+            - Path=/api/v1/**
+          filters:
+            - AuthenticationFilter
+
+        - id: task-service-svc
+          uri: lb://TASK-SERVICE-SVC
+          predicates:
+            - Path=/tasks/**
+          filters:
+            - AuthenticationFilter
+  application:
+    name: APIGateway
+
+security:
+  jwt:
+    key: somerandomkeywhichislongenoughtoalignwiththejwtspecification

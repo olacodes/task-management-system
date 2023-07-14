@@ -1,0 +1,44 @@
+server:
+  port: 8081
+
+db:
+  host: localhost
+  name: auth-service-db
+  username: postgres
+  password: password
+  url: "jdbc:postgresql://${db.host}:5432/${db.name}"
+
+spring:
+  application.name: auth-service
+  profiles.active: default
+  datasource:
+    url: ${db.url}
+    driverClassName: org.postgresql.Driver
+    username: ${db.username}
+    password: ${db.password}
+
+  flyway:
+    url: ${db.url}
+    user: ${db.username}
+    password: ${db.password}
+    driver-class-name: org.postgresql.Driver
+    enabled: true
+
+  jpa:
+    database: POSTGRESQL
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+security:
+  jwt:
+    key: somerandomkeywhichislongenoughtoalignwiththejwtspecification
+    expiration: 300000
+    refresh-token:
+      expiration: 3000000000
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
